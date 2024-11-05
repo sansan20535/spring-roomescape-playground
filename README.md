@@ -13,3 +13,16 @@
 > 💡thymeleaf의존성 추가 후 해결 
 > 
 > 템플릿 엔진 없이 렌더링 하는 방법 : https://bottom-to-top.tistory.com/38
+
+# 🚀2단계 - 예약 조회
+
+---
+
+## 🔧구현사항
+
+- [ ] /reservation 렌더링
+- [ ] 예약 목록 조회 API 구현
+---
+
+## 🧐고민사항
+
