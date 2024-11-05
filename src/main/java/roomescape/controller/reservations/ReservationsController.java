@@ -1,11 +1,14 @@
 package roomescape.controller.reservations;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import roomescape.dto.request.ReservationRegisterRequest;
 import roomescape.dto.response.ReservationRegisterResponse;
 import roomescape.entity.ReservationEntity;
+import roomescape.enums.ErrorMessage;
+import roomescape.exception.NotFoundException;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -26,7 +29,7 @@ public class ReservationsController {
 
     @PostMapping
     public ResponseEntity<ReservationRegisterResponse> createReservation(
-            @RequestBody final ReservationRegisterRequest reservationRegisterRequest
+            @RequestBody @Valid final ReservationRegisterRequest reservationRegisterRequest
     ) {
         final ReservationEntity reservationEntity = ReservationEntity.builder()
                 .id(index.incrementAndGet())
@@ -54,7 +57,11 @@ public class ReservationsController {
         final ReservationEntity findReservationEntity = reservationEntities.stream()
                 .filter(reservationEntity -> reservationEntity.getId() == reservationId)
                 .findFirst()
-                .orElseThrow(null);
+                .orElse(null);
+
+        if (findReservationEntity == null) {
+            throw new NotFoundException(ErrorMessage.NOT_FOUND_RESERVATION);
+        }
 
         reservationEntities.remove(findReservationEntity);
 
