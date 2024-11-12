@@ -76,3 +76,6 @@
 
 😈 민감한 정보 노출 주의
 > application-secrets.properties를 만들어 숨김
+
+😈 .sql파일을 resources/db/~에 두니 인식 X
+> classpath: 바로 아래에 두어야 함
