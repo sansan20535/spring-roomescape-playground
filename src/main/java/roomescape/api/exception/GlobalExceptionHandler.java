@@ -1,4 +1,4 @@
-package roomescape.exception;
+package roomescape.api.exception;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;

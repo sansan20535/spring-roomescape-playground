@@ -1,4 +1,4 @@
-package roomescape.entity;
+package roomescape.db.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ReservationEntity {
+public class ReservationsEntity {
 
     private final long id;
 
