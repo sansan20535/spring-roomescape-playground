@@ -1,9 +1,12 @@
 package roomescape.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class ReservationEntity {
 
     private final long id;
@@ -14,11 +17,4 @@ public class ReservationEntity {
 
     private final String time;
 
-    @Builder
-    public ReservationEntity(long id, String name, String date, String time) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.time = time;
-    }
 }
