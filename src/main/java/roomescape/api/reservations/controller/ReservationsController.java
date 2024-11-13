@@ -6,11 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import roomescape.api.reservations.dto.request.ReservationRegisterRequest;
-import roomescape.api.reservations.dto.response.ReservationRegisterResponse;
 import roomescape.api.reservations.service.ReservationsService;
 import roomescape.db.entity.ReservationsEntity;
-import roomescape.enums.ErrorMessage;
-import roomescape.api.exception.NotFoundException;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -33,42 +30,23 @@ public class ReservationsController {
     }
 
     @PostMapping
-    public ResponseEntity<ReservationRegisterResponse> createReservation(
+    public ResponseEntity<Void> createReservation(
             @RequestBody @Valid final ReservationRegisterRequest reservationRegisterRequest
     ) {
-        final ReservationsEntity reservationsEntity = ReservationsEntity.builder()
-                .id(index.incrementAndGet())
-                .name(reservationRegisterRequest.name())
-                .date(reservationRegisterRequest.date())
-                .time(reservationRegisterRequest.time())
-                .build();
-
-        reservationEntities.add(reservationsEntity);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Location", URI.create("/reservations/" + reservationsEntity.getId()).toString())
-                .body(ReservationRegisterResponse.of(
-                        reservationsEntity.getId(),
-                        reservationsEntity.getName(),
-                        reservationsEntity.getDate(),
-                        reservationsEntity.getTime()
-                ));
+                .header("Location", URI.create("/reservations/" +
+                        reservationsService.createReservations(reservationRegisterRequest.name(), reservationRegisterRequest.date(), reservationRegisterRequest.time())).toString()
+                )
+                .body(null);
     }
 
     @DeleteMapping("/{reservationId}")
     public ResponseEntity<Void> deleteReservation(
             @PathVariable(name = "reservationId") final long reservationId
     ) {
-        final ReservationsEntity findReservationsEntity = reservationEntities.stream()
-                .filter(reservationsEntity -> reservationsEntity.getId() == reservationId)
-                .findFirst()
-                .orElse(null);
 
-        if (findReservationsEntity == null) {
-            throw new NotFoundException(ErrorMessage.NOT_FOUND_RESERVATION);
-        }
-
-        reservationEntities.remove(findReservationsEntity);
+        reservationsService.deleteReservations(reservationId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }

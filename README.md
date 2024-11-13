@@ -101,3 +101,8 @@
 😈 reservation, reservationsEntity 등 단수와 복수의 통일(컨벤션)이 필요해 보임
 > 복수형을 기본으로 
 
+😈 update vs batchUpdate
+
+😈 keyHolder? PreparedStatement? NotSerializableException?
+
+
