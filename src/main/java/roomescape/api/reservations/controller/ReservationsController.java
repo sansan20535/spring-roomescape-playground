@@ -10,9 +10,7 @@ import roomescape.api.reservations.service.ReservationsService;
 import roomescape.db.entity.ReservationsEntity;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/reservations")
@@ -20,9 +18,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ReservationsController {
 
     private final ReservationsService reservationsService;
-
-    private List<ReservationsEntity> reservationEntities = new ArrayList<>();
-    private AtomicLong index = new AtomicLong();
 
     @GetMapping
     public ResponseEntity<List<ReservationsEntity>> getReservations() {
