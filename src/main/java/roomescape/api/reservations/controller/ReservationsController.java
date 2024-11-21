@@ -29,11 +29,13 @@ public class ReservationsController {
             @RequestBody @Valid final ReservationRegisterRequest reservationRegisterRequest
     ) {
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Location", URI.create("/reservations/" +
-                        reservationsService.createReservations(reservationRegisterRequest.name(), reservationRegisterRequest.date(), reservationRegisterRequest.time())).toString()
-                )
-                .body(null);
+        final long reservationsId = reservationsService.createReservations(
+                reservationRegisterRequest.name(),
+                reservationRegisterRequest.date(),
+                reservationRegisterRequest.time()
+        );
+
+        return ResponseEntity.created(URI.create("/reservations/" + reservationsId)).build();
     }
 
     @DeleteMapping("/{reservationId}")
