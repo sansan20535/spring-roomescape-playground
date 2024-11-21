@@ -49,7 +49,7 @@ public class ReservationsService {
 
     @Transactional
     public void deleteReservations(final long reservationId) {
-        final String sql = "delete from reservation where id = ?";
+        final String sql = "DELETE FROM reservation WHERE id = ?";
 
         jdbcTemplate.update(sql, reservationId);
     }
