@@ -105,4 +105,12 @@
 
 😈 keyHolder? PreparedStatement? NotSerializableException?
 
+# 🚀8단계 - 시간 관리 기능
 
+---
+
+## 🧐고민사항
+
+😈 Service에 데이터를 저장하고 불러오는 DB관련이 기능이 있는 것이 어색함
+> DAO객체를 만들어 이곳에서 처리하도록 수정
+> Reservation도 이처럼 수정할 예정
