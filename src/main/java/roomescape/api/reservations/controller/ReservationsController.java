@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import roomescape.api.reservations.dto.request.ReservationRegisterRequest;
+import roomescape.api.reservations.dto.response.ReservationRegisterResponse;
 import roomescape.api.reservations.service.ReservationsService;
 import roomescape.db.entity.ReservationsEntity;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,17 +25,17 @@ public class ReservationsController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createReservation(
+    public ResponseEntity<ReservationRegisterResponse> createReservation(
             @RequestBody @Valid final ReservationRegisterRequest reservationRegisterRequest
     ) {
 
-        final long reservationsId = reservationsService.createReservations(
+        final ReservationRegisterResponse reservationRegisterResponse = reservationsService.createReservations(
                 reservationRegisterRequest.name(),
                 reservationRegisterRequest.date(),
                 reservationRegisterRequest.time()
         );
 
-        return ResponseEntity.created(URI.create("/reservations/" + reservationsId)).build();
+        return ResponseEntity.status(HttpStatus.CREATED).header("Location", "/reservations/" + reservationRegisterResponse.id()).body(reservationRegisterResponse);
     }
 
     @DeleteMapping("/{reservationId}")
