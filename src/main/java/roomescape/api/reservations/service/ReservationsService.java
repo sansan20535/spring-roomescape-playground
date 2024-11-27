@@ -6,7 +6,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import roomescape.api.exception.NotFoundException;
+import roomescape.api.reservations.dto.response.ReservationRegisterResponse;
 import roomescape.db.entity.ReservationsEntity;
+import roomescape.enums.ErrorMessage;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -17,6 +20,8 @@ import java.util.List;
 public class ReservationsService {
 
     private final JdbcTemplate jdbcTemplate;
+
+    private static final int NOT_FOUND_RESERVATION = 0;
 
     @Transactional(readOnly = true)
     public List<ReservationsEntity> getReservations() {
@@ -32,7 +37,7 @@ public class ReservationsService {
     }
 
     @Transactional
-    public long createReservations(final String name, final String date, final String time) {
+    public ReservationRegisterResponse createReservations(final String name, final String date, final String time) {
         final String sql = "INSERT INTO reservation(name, date, time) VALUES (?, ?, ?)";
         final KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -44,13 +49,26 @@ public class ReservationsService {
             return ps;
         }, keyHolder);
 
-        return keyHolder.getKey().longValue();
+        final String findSql = "SELECT id, name, date, time FROM reservation WHERE id = (?)";
+
+        return jdbcTemplate.queryForObject(
+                findSql,
+                (rs, rowNum) -> ReservationRegisterResponse.of(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getString("date"),
+                        rs.getString("time")
+                ),
+                keyHolder.getKey().longValue()
+        );
     }
 
     @Transactional
     public void deleteReservations(final long reservationId) {
         final String sql = "DELETE FROM reservation WHERE id = ?";
 
-        jdbcTemplate.update(sql, reservationId);
+        if (jdbcTemplate.update(sql, reservationId) == NOT_FOUND_RESERVATION) {
+            throw new NotFoundException(ErrorMessage.NOT_FOUND_RESERVATION);
+        }
     }
 }
