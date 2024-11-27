@@ -13,7 +13,7 @@ public class RoomescapeViewController {
 
     @GetMapping("/reservation")
     public String renderingReservationPage() {
-        return "reservation";
+        return "new-reservation";
     }
 
 }

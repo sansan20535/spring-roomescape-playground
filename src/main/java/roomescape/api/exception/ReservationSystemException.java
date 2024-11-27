@@ -5,12 +5,12 @@ import org.springframework.http.HttpStatus;
 import roomescape.enums.ErrorMessage;
 
 @Getter
-public class ReservationException extends RuntimeException {
+public class ReservationSystemException extends RuntimeException {
 
     private final String message;
     private final HttpStatus httpStatus;
 
-    protected ReservationException(final ErrorMessage errorMessage) {
+    protected ReservationSystemException(final ErrorMessage errorMessage) {
         super(errorMessage.getMessage());
         this.message = errorMessage.getMessage();
         this.httpStatus = errorMessage.getHttpStatus();

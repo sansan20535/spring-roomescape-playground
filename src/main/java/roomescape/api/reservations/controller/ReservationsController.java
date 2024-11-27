@@ -32,7 +32,7 @@ public class ReservationsController {
         final ReservationRegisterResponse reservationRegisterResponse = reservationsService.createReservations(
                 reservationRegisterRequest.name(),
                 reservationRegisterRequest.date(),
-                reservationRegisterRequest.time()
+                reservationRegisterRequest.timeId()
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).header("Location", "/reservations/" + reservationRegisterResponse.id()).body(reservationRegisterResponse);

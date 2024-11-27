@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     // custom
-    @ExceptionHandler({NotFoundException.class, BadRequestException.class})
-    public ResponseEntity<String> handleCustomException(final ReservationException reservationException) {
-        return ResponseEntity.status(reservationException.getHttpStatus()).body(reservationException.getMessage());
+    @ExceptionHandler({NotFoundSystemException.class, BadRequestSystemException.class})
+    public ResponseEntity<String> handleCustomException(final ReservationSystemException reservationSystemException) {
+        return ResponseEntity.status(reservationSystemException.getHttpStatus()).body(reservationSystemException.getMessage());
     }
 
     // validation
