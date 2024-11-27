@@ -32,7 +32,7 @@ public class ReservationsController {
         final long reservationsId = reservationsService.createReservations(
                 reservationRegisterRequest.name(),
                 reservationRegisterRequest.date(),
-                reservationRegisterRequest.time()
+                reservationRegisterRequest.timeId()
         );
 
         return ResponseEntity.created(URI.create("/reservations/" + reservationsId)).build();
