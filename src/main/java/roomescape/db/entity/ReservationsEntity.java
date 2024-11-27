@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.sql.Time;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -15,6 +17,6 @@ public class ReservationsEntity {
 
     private final String date;
 
-    private final String time;
+    private final Time time;
 
 }
