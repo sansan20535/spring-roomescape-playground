@@ -16,4 +16,9 @@ public class RoomescapeViewController {
         return "new-reservation";
     }
 
+    @GetMapping("/time")
+    public String renderingTimePage() {
+        return "time";
+    }
+
 }

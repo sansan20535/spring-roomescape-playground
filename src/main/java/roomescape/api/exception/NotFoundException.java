@@ -1,4 +1,4 @@
-package roomescape.exception;
+package roomescape.api.exception;
 
 import roomescape.enums.ErrorMessage;
 

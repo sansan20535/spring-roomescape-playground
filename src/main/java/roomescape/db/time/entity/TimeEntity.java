@@ -1,4 +1,4 @@
-package roomescape.db.entity;
+package roomescape.db.time.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

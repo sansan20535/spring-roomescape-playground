@@ -1,11 +1,13 @@
-package roomescape.db.dao;
+package roomescape.db.time.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import roomescape.db.entity.TimeEntity;
+import roomescape.api.exception.NotFoundException;
+import roomescape.db.time.entity.TimeEntity;
+import roomescape.enums.ErrorMessage;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -16,6 +18,8 @@ import java.util.List;
 public class TimeDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private static final int DATABASE_ERROR = 0;
+
 
     public List<TimeEntity> getTimes() {
 
@@ -29,7 +33,7 @@ public class TimeDao {
         );
     }
 
-    public long createTime(final String time) {
+    public TimeEntity createTime(final String time) {
         final String sql = "INSERT INTO time(time) VALUES (?)";
         final KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -39,12 +43,24 @@ public class TimeDao {
             return ps;
         }, keyHolder);
 
-        return keyHolder.getKey().longValue();
+        final String findSql = "SELECT id, time FROM time WHERE id = (?)";
+        return jdbcTemplate.queryForObject(
+                findSql,
+                (resultSet, rowNum) -> {
+                    return TimeEntity.builder()
+                            .id(resultSet.getLong("id"))
+                            .time(resultSet.getString("time")) // time_id 대신 실제 시간 반환
+                            .build();
+                },
+                keyHolder.getKey().longValue()
+        );
     }
 
     public void deleteTime(final long timeId) {
         final String sql = "DELETE FROM time WHERE id = ?";
 
-        jdbcTemplate.update(sql, timeId);
+        if (jdbcTemplate.update(sql, timeId) == DATABASE_ERROR) {
+            throw new NotFoundException(ErrorMessage.NOT_FOUND_RESERVATION);
+        }
     }
 }
